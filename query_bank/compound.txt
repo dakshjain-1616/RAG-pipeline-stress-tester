@@ -1,0 +1,102 @@
+# Compound Queries (50+ queries)
+# These queries test if the RAG system can handle complex, multi-part questions
+
+What is the weather and what should I wear?
+How do I cook pasta and what sauce goes with it?
+Where can I buy a laptop and what specs should I look for?
+When is the meeting and who should attend?
+Why did the project fail and what can we learn?
+Who wrote the book and when was it published?
+What is the price and is it worth buying?
+How does it work and what are the limitations?
+Can you explain the concept and give an example?
+What are the benefits and what are the risks?
+Where is the location and how do I get there?
+When should I apply and what documents are needed?
+Why is this important and how does it affect me?
+What is the process and how long does it take?
+How much does it cost and is there a discount?
+What are the options and which one is best?
+Can you help me and what information do you need?
+What is the problem and how do I fix it?
+Where can I find it and what should I look for?
+When will it be ready and who is responsible?
+Why did this happen and what should I do next?
+Can you explain this and show me how?
+What is the difference and which one should I choose?
+Is this correct and how do I verify it?
+How much time does it take and what resources are needed?
+What are the requirements and how do I meet them?
+Can you recommend something and why?
+What is the purpose and how does it work?
+Is this available and when can I get it?
+How do I start and what should I prepare?
+Where should I begin and what tools are needed?
+When should I apply and what are the criteria?
+Who can help and how do I contact them?
+Why is it important and what are the consequences?
+Can you clarify and provide more details?
+What is the process and what are the steps?
+Is there a better way and how do I implement it?
+How often should I do this and what are the signs?
+What are the requirements and what if I don't meet them?
+Can you summarize and highlight the key points?
+What is the main point and how does it relate?
+Is this the right approach and what alternatives exist?
+How do I know if it's working and what metrics to track?
+Where can I learn more and what resources are recommended?
+When is the deadline and what happens if I miss it?
+Who else is involved and what are their roles?
+Why should I choose this and what are the comparisons?
+Can you provide details and explain the implications?
+What is the next step and what preparation is needed?
+Is this included and what else is covered?
+How do I proceed and what approvals are needed?
+What are the risks and how do I mitigate them?
+Can you give an example and explain the pattern?
+What is the expected outcome and how do I measure it?
+Is this mandatory and what are the exceptions?
+How do I prepare and what should I study?
+Where is the documentation and how do I access it?
+When can I start and what prerequisites are needed?
+Who approves this and what is the process?
+Why is this necessary and what if I skip it?
+Can you explain further and provide context?
+What is the timeline and what are the milestones?
+Is this optional and what are the implications?
+How do I submit and what format is required?
+What are the alternatives and how do they compare?
+Can you check this and verify the accuracy?
+What is the status and when will it update?
+Is this complete and what remains to be done?
+How do I access and what credentials are needed?
+Where is the file and what is the path?
+When is the meeting and what should I prepare?
+Who is the manager and how do I reach them?
+Why is this delayed and what can accelerate it?
+Can you verify and confirm the details?
+What is the policy and what are the exceptions?
+Is this approved and who signed it?
+How do I request and what information is needed?
+What are the steps and what order should I follow?
+Can you review and provide feedback?
+What is the format and what standards apply?
+Is this acceptable and what improvements are needed?
+How do I update and what version should I use?
+Where is the report and how do I generate it?
+When is the payment and what methods are accepted?
+Who handles this and what is their contact?
+Why is this rejected and what can I appeal?
+Can you confirm and document the decision?
+What is the procedure and what forms are needed?
+Is this final and can it be changed?
+How do I cancel and what are the consequences?
+What are the fees and what is included?
+Can you assist and what is your role?
+What is the rule and what are the exceptions?
+Is this valid and how long does it last?
+How do I register and what information is required?
+Where is the office and what are the hours?
+When is the event and what should I bring?
+Who is the contact and what is their expertise?
+Why is this pending and what is needed to proceed?

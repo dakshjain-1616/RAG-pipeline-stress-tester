@@ -1,0 +1,110 @@
+# Multilingual Queries (50+ queries)
+# These queries test if the RAG system can handle non-English inputs
+
+¿Qué es esto?
+Comment ça va?
+Wie geht es dir?
+こんにちは
+你好
+안녕하세요
+مرحبا
+Привет
+Γειά σου
+שלום
+Cześć
+Olá
+Olá, como posso ajudar?
+Bom dia
+Boa tarde
+Boa noite
+Obrigado
+Desculpe
+Por favor
+Sim
+Não
+Quero saber mais
+Não entendi
+Repita, please
+Fale mais lentamente
+Você fala inglês?
+Eu preciso de ajuda
+Onde está o banheiro?
+Qual é o preço?
+Quando começa?
+Quem é o responsável?
+Por que isso aconteceu?
+Como funciona?
+O que é isso?
+Qual é o problema?
+Existe uma solução?
+Tem outra opção?
+É possível cancelar?
+Como faço para comprar?
+Qual é o prazo?
+Tem desconto?
+Aceita cartão?
+Tem estacionamento?
+É seguro?
+Qual é a distância?
+Demora quanto tempo?
+Preciso de reserva?
+Tem Wi-Fi?
+Serve almoço?
+Tem opção vegetariana?
+É gratuito?
+Preciso de documento?
+Qual é a política?
+Tem garantia?
+Como entro em contato?
+Qual é o horário?
+Fecha quando?
+Abre qual hora?
+Tem delivery?
+Aceita quais cartões?
+Qual é o código?
+Onde posso encontrar?
+Tem em outra cor?
+Qual é o tamanho?
+Tem promoção?
+É novo ou usado?
+Qual é a marca?
+De onde é?
+Quando foi lançado?
+Qual é a versão?
+Tem atualização?
+É compatível?
+Funciona com quê?
+Preciso instalar?
+Como configuro?
+Tem tutorial?
+Existe documentação?
+Qual é a diferença?
+Qual é melhor?
+Por que escolher?
+O que inclui?
+Tem suporte?
+Qual é o plano?
+Custa quanto?
+Tem trial?
+Como cancelo?
+Refund é possível?
+Quanto tempo leva?
+É automático?
+Preciso de internet?
+Funciona offline?
+Tem app?
+Qual é o site?
+Como acesso?
+Qual é o login?
+Esqueci minha senha
+Como recupero?
+Tem verificação?
+É seguro usar?
+Quais são os riscos?
+Tem vírus?
+É confiável?
+Qual é a reputação?
+O que dizem os usuários?
+Tem review?
+Qual é a nota?
+É recomendado?

@@ -1,0 +1,109 @@
+# Ambiguous Queries (50+ queries)
+# These queries test if the RAG system can handle vague, unclear, or multi-interpretable questions
+
+What is it?
+Can you tell me about that?
+How does this work?
+What should I do?
+Where can I find it?
+When is the best time?
+Who should I contact?
+Why is this happening?
+Can you explain this?
+What do you think?
+Is this correct?
+How much does it cost?
+What are the options?
+Can you help me with something?
+What is the problem?
+How do I fix it?
+Where is the location?
+When will it be ready?
+Who is responsible?
+Why did this occur?
+Can you show me?
+What is the difference?
+Is it worth it?
+How long does it take?
+What are the benefits?
+Can you recommend something?
+What is the purpose?
+Is this available?
+How do I get started?
+Where should I begin?
+When should I apply?
+Who can help?
+Why is it important?
+Can you clarify?
+What is the process?
+Is there a better way?
+How often should I do this?
+What are the requirements?
+Can you summarize?
+What is the main point?
+Is this the right approach?
+How do I know if it's working?
+Where can I learn more?
+When is the deadline?
+Who else is involved?
+Why should I choose this?
+Can you provide details?
+What is the next step?
+Is this included?
+How do I proceed?
+What are the risks?
+Can you give an example?
+What is the expected outcome?
+Is this mandatory?
+How do I prepare?
+Where is the documentation?
+When can I start?
+Who approves this?
+Why is this necessary?
+Can you explain further?
+What is the timeline?
+Is this optional?
+How do I submit?
+What are the alternatives?
+Can you check this?
+What is the status?
+Is this complete?
+How do I access?
+Where is the file?
+When is the meeting?
+Who is the manager?
+Why is this delayed?
+Can you verify?
+What is the policy?
+Is this approved?
+How do I request?
+What are the steps?
+Can you review?
+What is the format?
+Is this acceptable?
+How do I update?
+Where is the report?
+When is the payment?
+Who handles this?
+Why is this rejected?
+Can you confirm?
+What is the procedure?
+Is this final?
+How do I cancel?
+What are the fees?
+Can you assist?
+What is the rule?
+Is this valid?
+How do I register?
+Where is the office?
+When is the event?
+Who is the contact?
+Why is this denied?
+Can you guide me?
+What is the standard?
+Is this required?
+How do I apply?
+Where is the center?
+When is the review?
+Who decides this?
+Why is this pending?

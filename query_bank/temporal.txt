@@ -1,0 +1,104 @@
+# Temporal Trap Queries (50+ queries)
+# These queries test if the RAG system can handle time-sensitive questions and temporal reasoning
+
+What will happen tomorrow?
+What was the weather yesterday?
+What is the forecast for next week?
+What happened last year?
+What will be the trends in 2025?
+What was the most popular movie in 1990?
+What will technology look like in 10 years?
+What happened before the internet existed?
+What will AI be capable of next year?
+What was the stock price last month?
+What will happen after the election?
+What was the situation before COVID?
+What will prices be in the future?
+What happened during the 1980s?
+What will sports records be broken next season?
+What was life like in ancient times?
+What will medicine advance to by 2030?
+What happened two decades ago?
+What will climate change cause by 2050?
+What was the economy like before the crisis?
+What will education look like tomorrow?
+What happened in the previous century?
+What will transportation be like next decade?
+What was communication like before phones?
+What will food production change to next year?
+What happened during the war?
+What will housing costs be in five years?
+What was travel like before airplanes?
+What will energy sources shift to by 2040?
+What happened three years ago?
+What will fashion trends be next season?
+What was shopping like before online stores?
+What will work environments change to tomorrow?
+What happened in the last quarter?
+What will social media evolve to next year?
+What was banking like before digital?
+What will healthcare improve to by 2026?
+What happened during the recession?
+What will entertainment become in the future?
+What was manufacturing like before automation?
+What will agriculture advance to next harvest?
+What happened four months ago?
+What will retail transform to by 2027?
+What was news delivery like before internet?
+What will finance regulations change to tomorrow?
+What happened six weeks ago?
+What will construction methods evolve to next year?
+What was transportation like before cars?
+What will security measures improve to by 2028?
+What happened seven days ago?
+What will communication technology advance to next month?
+What was education like before computers?
+What will legal systems change to by 2029?
+What happened eight hours ago?
+What will government policies shift to next term?
+What was healthcare like before modern medicine?
+What will cultural norms evolve to by 2030?
+What happened nine minutes ago?
+What will scientific discoveries emerge tomorrow?
+What was agriculture like before machinery?
+What will business practices change to next fiscal year?
+What happened ten seconds ago?
+What will environmental policies improve to by 2031?
+What was industry like before industrialization?
+What will research focus shift to next grant cycle?
+What happened eleven moments ago?
+What will urban planning develop to by 2032?
+What was society like before modernization?
+What will innovation priorities change to next budget?
+What happened twelve intervals ago?
+What will infrastructure upgrade to by 2033?
+What was commerce like before globalization?
+What will development goals evolve to next planning period?
+What happened thirteen cycles ago?
+What will systems modernize to by 2034?
+What was technology like before digitalization?
+What will strategic objectives shift to next roadmap?
+What happened fourteen phases ago?
+What will processes optimize to by 2035?
+What was information like before databases?
+What will operational methods change to next iteration?
+What happened fifteen stages ago?
+What will capabilities expand to by 2036?
+What was data like before computing?
+What will performance metrics improve to next review?
+What happened sixteen periods ago?
+What will features enhance to by 2037?
+What was storage like before cloud?
+What will quality standards elevate to next assessment?
+What happened seventeen epochs ago?
+What will functions integrate to by 2038?
+What was networking like before wireless?
+What will efficiency measures advance to next evaluation?
+What happened eighteen eras ago?
+What will interfaces simplify to by 2039?
+What was processing like before parallel?
+What will user experiences transform to next release?
+What happened nineteen ages ago?
+What will architectures restructure to by 2040?
+What was memory like before solid state?
+What will system designs evolve to next version?

@@ -1,0 +1,108 @@
+# Negation Trap Queries (50+ queries)
+# These queries test if the RAG system properly handles negation and negative constraints
+
+What is NOT true about climate change?
+Which statement is FALSE about economics?
+What should I NOT do when coding?
+Which of these is INCORRECT?
+What is the opposite of success?
+What should never be done in surgery?
+Which advice is WRONG about investing?
+What is NOT recommended for beginners?
+Which practice should be avoided?
+What is the exception to the rule?
+Which method does NOT work?
+What should you NOT eat for diabetes?
+Which behavior is INAPPROPRIATE?
+What is NOT a symptom of flu?
+Which step should be skipped?
+What is NOT included in the package?
+Which feature is MISSING?
+What should NOT be mentioned?
+Which option is INVALID?
+What is NOT covered by insurance?
+Which document is NOT required?
+What should never be said?
+Which action is FORBIDDEN?
+What is NOT allowed in the exam?
+Which item is OPTIONAL?
+What should NOT be done first?
+Which procedure is NOT standard?
+What is NOT part of the process?
+Which requirement is NOT mandatory?
+What should be excluded?
+Which element is NOT necessary?
+What is NOT expected?
+Which outcome is UNLIKELY?
+What should NOT be assumed?
+Which premise is FALSE?
+What is NOT a valid conclusion?
+Which argument is INVALID?
+What should NOT be considered?
+Which factor is IRRELEVANT?
+What is NOT a priority?
+Which concern is MINOR?
+What should NOT be worried about?
+Which risk is NOT significant?
+What is NOT a problem?
+Which issue is NOT urgent?
+What should NOT be fixed?
+Which error is NOT critical?
+What is NOT broken?
+Which component is NOT faulty?
+What should NOT be replaced?
+Which part is NOT damaged?
+What is NOT missing?
+Which piece is NOT absent?
+What should NOT be added?
+Which ingredient is NOT needed?
+What is NOT required?
+Which condition is NOT met?
+What should NOT be changed?
+Which setting is NOT adjustable?
+What is NOT configurable?
+Which parameter is NOT modifiable?
+What should NOT be updated?
+Which version is NOT current?
+What is NOT the latest?
+Which model is NOT newest?
+What should NOT be upgraded?
+Which system is NOT compatible?
+What is NOT supported?
+Which platform is NOT available?
+What should NOT be installed?
+Which software is NOT compatible?
+What is NOT compatible?
+Which hardware is NOT supported?
+What should NOT be connected?
+Which device is NOT recognized?
+What is NOT detected?
+Which sensor is NOT working?
+What should NOT be measured?
+Which metric is NOT tracked?
+What is NOT monitored?
+Which variable is NOT controlled?
+What should NOT be tested?
+Which case is NOT covered?
+What is NOT verified?
+Which check is NOT performed?
+What should NOT be validated?
+Which assertion is NOT true?
+What is NOT confirmed?
+Which result is NOT expected?
+What should NOT be concluded?
+Which inference is NOT valid?
+What is NOT proven?
+Which hypothesis is NOT supported?
+What should NOT be claimed?
+Which statement is NOT accurate?
+What is NOT correct?
+Which fact is NOT true?
+What should NOT be reported?
+Which data is NOT reliable?
+What is NOT verified?
+Which source is NOT credible?
+What should NOT be trusted?
+Which information is NOT accurate?
+What is NOT certain?
+Which claim is NOT substantiated?
