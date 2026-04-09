@@ -59,7 +59,7 @@ class Reporter:
         latency = scores.get('latency', {})
         by_type = scores.get('by_query_type', {})
         recommendations = scores.get('recommendations', [])
-        
+
         if health_score >= 80:
             health_status, health_color = "EXCELLENT", "#28a745"
         elif health_score >= 60:
@@ -68,86 +68,30 @@ class Reporter:
             health_status, health_color = "FAIR", "#ffc107"
         else:
             health_status, health_color = "POOR", "#dc3545"
-        
+
         type_names = list(by_type.keys()) if by_type else ['unknown']
         type_success_rates = [by_type.get(t, {}).get('success_rate', 0) * 100 for t in type_names]
         latencies = [r['latency_ms'] for r in results if r.get('latency_ms')]
-        
-        # Build recommendations HTML
-        recommendations_html = ''.join('<li>' + rec + '</li>' for rec in recommendations)
-        
-        # Build table rows HTML
+
+        recommendations_html = ''.join(f'<li>{rec}</li>' for rec in recommendations)
+
         table_rows_html = ''
         for tn in type_names:
-            type_data = by_type.get(tn, {})
-            success_class = "success" if type_data.get("success_rate", 0) > 0.8 else "error"
-            count_val = type_data.get("count", 0)
-            success_val = type_data.get("success_rate", 0) * 100
-            latency_val = type_data.get("avg_latency", 0)
-            error_val = type_data.get("error_rate", 0) * 100
-            hallucination_val = type_data.get("hallucination_rate", 0) * 100
-            table_rows_html += '<tr><td>' + tn + '</td><td>' + str(count_val) + '</td><td class="' + success_class + '">' + f'{success_val:.1f}' + '%</td><td>' + f'{latency_val:.1f}' + 'ms</td><td>' + f'{error_val:.1f}' + '%</td><td>' + f'{hallucination_val:.1f}' + '%</td></tr>'
-        
-        # Prepare Chart.js data as JSON strings
+            td = by_type.get(tn, {})
+            css = "success" if td.get("success_rate", 0) > 0.8 else "error"
+            table_rows_html += (
+                f'<tr><td>{tn}</td>'
+                f'<td>{td.get("count", 0)}</td>'
+                f'<td class="{css}">{td.get("success_rate", 0) * 100:.1f}%</td>'
+                f'<td>{td.get("avg_latency", 0):.1f}ms</td>'
+                f'<td>{td.get("error_rate", 0) * 100:.1f}%</td>'
+                f'<td>{td.get("hallucination_rate", 0) * 100:.1f}%</td></tr>'
+            )
+
         type_labels_json = json.dumps(type_names)
         type_data_json = json.dumps(type_success_rates)
         latencies_json = json.dumps(latencies if latencies else [0])
-        
-        # Build JavaScript section as a raw string (no f-string)
-        js_section = '''<script>
-        const typeCtx = document.getElementById('typeChart').getContext('2d');
-        new Chart(typeCtx, {
-            type: 'bar',
-            data: {
-                labels: ' + type_labels_json + ',
-                datasets: [{
-                    label: 'Success Rate (%)',
-                    data: ' + type_data_json + ',
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100
-                    }
-                }
-            }
-        });
-        
-        const latencyCtx = document.getElementById('latencyChart').getContext('2d');
-        const binSize = 100;
-        const latData = ' + latencies_json + ';
-        const maxLat = latData.length > 0 ? Math.max(...latData) : 0;
-        const bins = {};
-        for (let i = 0; i <= maxLat; i += binSize) bins[i] = 0;
-        latData.forEach(function(lat) {
-            const bin = Math.floor(lat / binSize) * binSize;
-            if (bins[bin] !== undefined) bins[bin]++;
-        });
-        new Chart(latencyCtx, {
-            type: 'bar',
-            data: {
-                labels: Object.keys(bins).map(function(k) { return k + 'ms'; }),
-                datasets: [{
-                    label: 'Requests',
-                    data: Object.values(bins),
-                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true
-            }
-        });
-    </script>'''
-        
-        # Build HTML content using format() to avoid f-string issues
+
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         total_requests = scores.get('total_requests', 0)
         success_rate = (1 - scores.get('error_rate', 0)) * 100
@@ -155,23 +99,17 @@ class Reporter:
         hallucination_val = scores.get('hallucination_rate', 0) * 100
         p95_val = latency.get('p95', 0)
         consistency_val = scores.get('consistency_score', 0) * 100
-        
-        html_content = '''<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAG Stress Test Report</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
+
+        # CSS kept as a plain string so curly braces need no escaping
+        css = """
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
         .header { background: #2c3e50; color: white; padding: 30px; margin-bottom: 20px; border-radius: 8px; }
         .header h1 { margin-bottom: 10px; }
         .health-score { background: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .health-score .score { font-size: 48px; font-weight: bold; color: ' + health_color + '; }
-        .health-score .status { font-size: 24px; color: ' + health_color + '; margin-top: 10px; }
+        """ + f".health-score .score {{ font-size: 48px; font-weight: bold; color: {health_color}; }}" + """
+        """ + f".health-score .status {{ font-size: 24px; color: {health_color}; margin-top: 10px; }}" + """
         .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px; }
         .metric-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .metric-card h3 { color: #2c3e50; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; }
@@ -189,38 +127,95 @@ class Reporter:
         tr:hover { background: #f5f5f5; }
         .success { color: #28a745; }
         .error { color: #dc3545; }
-    </style>
+        """
+
+        html_content = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG Stress Test Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>{css}</style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>RAG Pipeline Stress Test Report</h1>
-            <div class="timestamp">Generated: ' + timestamp + '</div>
+            <div class="timestamp">Generated: {timestamp}</div>
         </div>
-<div class="health-score">
-            <div class="score">''' + '{:.1f}/100'.format(health_score) + '''</div>
-            <div class="status">''' + health_status + '''</div>
+        <div class="health-score">
+            <div class="score">{health_score:.1f}/100</div>
+            <div class="status">{health_status}</div>
         </div>
         <div class="metrics-grid">
-            <div class="metric-card"><h3>Total Requests</h3><div class="metric-value">' + str(total_requests) + '</div><div class="metric-label">queries tested</div></div>
-            <div class="metric-card"><h3>Success Rate</h3><div class="metric-value">' + f'{success_rate:.1f}' + '%</div><div class="metric-label">successful responses</div></div>
-            <div class="metric-card"><h3>Precision Score</h3><div class="metric-value">' + f'{precision_val:.1f}' + '%</div><div class="metric-label">relevant responses</div></div>
-            <div class="metric-card"><h3>Hallucination Rate</h3><div class="metric-value">' + f'{hallucination_val:.1f}' + '%</div><div class="metric-label">potential hallucinations</div></div>
-            <div class="metric-card"><h3>P95 Latency</h3><div class="metric-value">' + f'{p95_val:.1f}' + 'ms</div><div class="metric-label">response time</div></div>
-            <div class="metric-card"><h3>Consistency</h3><div class="metric-value">' + f'{consistency_val:.1f}' + '%</div><div class="metric-label">uniform quality</div></div>
+            <div class="metric-card"><h3>Total Requests</h3><div class="metric-value">{total_requests}</div><div class="metric-label">queries tested</div></div>
+            <div class="metric-card"><h3>Success Rate</h3><div class="metric-value">{success_rate:.1f}%</div><div class="metric-label">successful responses</div></div>
+            <div class="metric-card"><h3>Precision Score</h3><div class="metric-value">{precision_val:.1f}%</div><div class="metric-label">relevant responses</div></div>
+            <div class="metric-card"><h3>Hallucination Rate</h3><div class="metric-value">{hallucination_val:.1f}%</div><div class="metric-label">potential hallucinations</div></div>
+            <div class="metric-card"><h3>P95 Latency</h3><div class="metric-value">{p95_val:.1f}ms</div><div class="metric-label">response time</div></div>
+            <div class="metric-card"><h3>Consistency</h3><div class="metric-value">{consistency_val:.1f}%</div><div class="metric-label">uniform quality</div></div>
         </div>
         <div class="chart-container"><h3>Success Rate by Query Type</h3><canvas id="typeChart"></canvas></div>
         <div class="chart-container"><h3>Latency Distribution</h3><canvas id="latencyChart"></canvas></div>
-        <div class="recommendations"><h3>Recommendations</h3><ul>' + recommendations_html + '</ul></div>
-        <div class="table-container"><h3>Query Type Breakdown</h3><table>
-            <thead><tr><th>Query Type</th><th>Count</th><th>Success Rate</th><th>Avg Latency</th><th>Error Rate</th><th>Hallucination Rate</th></tr></thead>
-            <tbody>' + table_rows_html + '</tbody>
-        </table></div>
+        <div class="recommendations"><h3>Recommendations</h3><ul>{recommendations_html}</ul></div>
+        <div class="table-container"><h3>Query Type Breakdown</h3>
+            <table>
+                <thead><tr><th>Query Type</th><th>Count</th><th>Success Rate</th><th>Avg Latency</th><th>Error Rate</th><th>Hallucination Rate</th></tr></thead>
+                <tbody>{table_rows_html}</tbody>
+            </table>
+        </div>
     </div>
-    ' + js_section + '
+    <script>
+        const typeCtx = document.getElementById('typeChart').getContext('2d');
+        new Chart(typeCtx, {{
+            type: 'bar',
+            data: {{
+                labels: {type_labels_json},
+                datasets: [{{
+                    label: 'Success Rate (%)',
+                    data: {type_data_json},
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }}]
+            }},
+            options: {{
+                responsive: true,
+                scales: {{
+                    y: {{ beginAtZero: true, max: 100 }}
+                }}
+            }}
+        }});
+
+        const latencyCtx = document.getElementById('latencyChart').getContext('2d');
+        const binSize = 100;
+        const latData = {latencies_json};
+        const maxLat = latData.length > 0 ? Math.max(...latData) : 0;
+        const bins = {{}};
+        for (let i = 0; i <= maxLat; i += binSize) bins[i] = 0;
+        latData.forEach(function(lat) {{
+            const bin = Math.floor(lat / binSize) * binSize;
+            if (bins[bin] !== undefined) bins[bin]++;
+        }});
+        new Chart(latencyCtx, {{
+            type: 'bar',
+            data: {{
+                labels: Object.keys(bins).map(function(k) {{ return k + 'ms'; }}),
+                datasets: [{{
+                    label: 'Requests',
+                    data: Object.values(bins),
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }}]
+            }},
+            options: {{ responsive: true }}
+        }});
+    </script>
 </body>
-</html>'''
-        
+</html>"""
+
         html_path = self.output_dir / self.html_filename
         with open(html_path, 'w', encoding='utf-8') as f:
             f.write(html_content)

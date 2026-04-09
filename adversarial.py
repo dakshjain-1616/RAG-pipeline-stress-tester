@@ -441,6 +441,19 @@ class QueryGenerator:
             'negation': self.negation.generate_batch(num_per_type),
             'compound': self.compound.generate_batch(num_per_type),
         }
+
+    def generate_all(self, query_types: Optional[List[str]] = None, num_per_type: int = 50) -> List[str]:
+        """Generate a flat list of queries, optionally filtered by type."""
+        all_types = self.generate_all_types(num_per_type)
+        if query_types:
+            selected = {t: all_types[t] for t in query_types if t in all_types}
+        else:
+            selected = all_types
+        return [q for queries in selected.values() for q in queries]
+
+    def generate_sample(self, num_per_type: int = 5) -> List[str]:
+        """Generate a small sample of queries across all types."""
+        return self.generate_all(num_per_type=num_per_type)
     
     def load_query_bank(self, query_bank_dir: str) -> Dict[str, List[str]]:
         """Load queries from query bank files."""

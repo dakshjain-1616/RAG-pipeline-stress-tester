@@ -82,26 +82,24 @@ class CorpusAnalyzer:
         keyword_list = list(self.domain_keywords)
         phrase_list = list(self.domain_phrases)
         
-        in_scope_templates = [
+        keyword_templates = [
             "What is {keyword}?", "Explain {keyword}", "How does {keyword} work?",
             "Describe {keyword}", "What are the benefits of {keyword}?",
             "Tell me about {keyword}", "What is the purpose of {keyword}?",
             "How is {keyword} used?", "What are {keyword} applications?",
             "Define {keyword}", "What does {keyword} mean?",
         ]
-        
-        if phrase_list:
-            in_scope_templates.extend([
-                "Explain the concept of {phrase}", "What is {phrase}?",
-                "How does {phrase} work?", "Describe {phrase}",
-            ])
-        
+        phrase_templates = [
+            "Explain the concept of {phrase}", "What is {phrase}?",
+            "How does {phrase} work?", "Describe {phrase}",
+        ]
+
         for i in range(num_in_scope):
             if phrase_list and i % 3 == 0:
-                template = "Explain {phrase}"
+                template = phrase_templates[i % len(phrase_templates)]
                 query = template.format(phrase=phrase_list[i % len(phrase_list)])
             else:
-                template = in_scope_templates[i % len(in_scope_templates)]
+                template = keyword_templates[i % len(keyword_templates)]
                 query = template.format(keyword=keyword_list[i % len(keyword_list)])
             in_scope_queries.append(query)
         
@@ -156,6 +154,17 @@ class CorpusAnalyzer:
             queries.append(query)
         return queries
     
+    def analyze(self, corpus_path: str, num_queries: int = 50) -> Dict[str, List[str]]:
+        """Analyze corpus and return generated queries by type."""
+        self.analyze_corpus(corpus_path)
+        scope_queries = self.generate_scope_queries(num_in_scope=num_queries, num_out_of_scope=num_queries)
+        adversarial = self.generate_adversarial_queries(num_queries=num_queries)
+        return {
+            'in_scope': scope_queries.get('in_scope', []),
+            'out_of_scope': scope_queries.get('out_of_scope', []),
+            'adversarial': adversarial,
+        }
+
     def get_statistics(self) -> Dict:
         """Get corpus analysis statistics."""
         return self.corpus_stats

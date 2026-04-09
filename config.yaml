@@ -1,44 +1,29 @@
 # RAG Pipeline Stress Tester Configuration
 
 endpoint:
-  url: "http://localhost:8000/query"
-  method: "POST"
-  timeout: 30
-  headers:
-    Content-Type: "application/json"
+  base_url: "http://localhost:8000"
+  query_path: "/query"
+  timeout_seconds: 30
 
 load:
-  concurrency: [1, 5, 10, 25, 50]
-  ramp_mode: true
-  duration_mode: false
+  concurrency_levels: [1, 5, 10, 25, 50]
+  ramp_mode: false
   duration_seconds: 60
-  rate_limit: 100
-  requests_per_second: 10
+  rate_limit_per_second: 100
 
 retry:
-  max_retries: 3
-  backoff_factor: 2
-  initial_delay: 1.0
-  max_delay: 10.0
+  max_attempts: 3
+  exponential_backoff: true
+  base_delay_seconds: 1.0
 
 evaluation:
   hallucination_threshold: 0.5
   refusal_keywords: ["I cannot", "I don't know", "Unable to", "Not enough information"]
-  latency_percentiles: [50, 95, 99]
 
 reporter:
   output_dir: "./reports"
-  json_report: true
-  html_report: true
-  include_recommendations: true
+  json_filename: "stress_test_results.json"
+  html_filename: "stress_test_report.html"
 
 query_bank:
   directory: "./query_bank"
-  files:
-    - "out_of_scope.txt"
-    - "ambiguous.txt"
-    - "multilingual.txt"
-    - "adversarial.txt"
-    - "temporal.txt"
-    - "negation.txt"
-    - "compound.txt"

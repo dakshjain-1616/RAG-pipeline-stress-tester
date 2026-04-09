@@ -106,13 +106,30 @@ pip install -r requirements.txt
 
 ```bash
 # Basic test — 10 concurrent users, 60 seconds
-python main.py stress-test --endpoint http://localhost:8000/query --concurrency 10 --duration 60
+python3 main.py stress-test --endpoint http://localhost:8000/query --concurrency 10 --duration 60
 
 # Use a config file
-python main.py stress-test --config config.yaml
+python3 main.py stress-test --config config.yaml
 
 # Test specific query types only
-python main.py stress-test --endpoint http://localhost:8000/query --query-types out_of_scope,adversarial
+python3 main.py stress-test --endpoint http://localhost:8000/query --query-types out_of_scope,adversarial
+
+# Custom output directory
+python3 main.py stress-test --endpoint http://localhost:8000/query --output ./my-reports
+```
+
+### Quick sanity check
+
+```bash
+# 35 sample queries, no report files written — just a health score
+python3 main.py quick-test --endpoint http://localhost:8000/query
+```
+
+### Generate queries from your own corpus
+
+```bash
+# Analyze a directory of .txt/.md/.json files to produce targeted query banks
+python3 main.py analyze-corpus --corpus ./my-docs --output ./query_bank --num-queries 50
 ```
 
 ---
@@ -123,8 +140,10 @@ Edit `config.yaml` to customize load levels, thresholds, and reporting:
 
 | Setting | What it controls |
 |---------|-----------------|
-| `load.concurrency` | Concurrent user levels to test (e.g., `[1, 5, 10, 25]`) |
+| `load.concurrency_levels` | Concurrent user levels to test (e.g., `[1, 5, 10, 25]`) |
+| `load.ramp_mode` | If `true`, steps through each concurrency level; if `false`, runs at first level for full duration |
 | `load.duration_seconds` | How long to run at each concurrency level |
+| `load.rate_limit_per_second` | Maximum requests per second |
 | `evaluation.hallucination_threshold` | Score below which a response is flagged |
 | `evaluation.refusal_keywords` | Phrases that indicate a refused answer |
 | `reporter.output_dir` | Where to save HTML and JSON reports |
@@ -144,7 +163,7 @@ Each test run saves two files to `./reports/`:
 ## Running Tests
 
 ```bash
-pytest tests/ -v
+python3 -m pytest tests/ -v
 ```
 
 58 tests covering all modules. Uses `aioresponses` to mock HTTP — no live RAG endpoint required.

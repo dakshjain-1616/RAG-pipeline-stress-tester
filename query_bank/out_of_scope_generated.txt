@@ -1,0 +1,51 @@
+# Generated out_of_scope queries
+What is the weather forecast today?
+Tell me about stock prices
+How do I find recipe for cake?
+What are the latest sports scores?
+Can you help me with movie reviews?
+Where can I get travel destinations?
+What's the best restaurant recommendations?
+Give me information about political news
+What is the cryptocurrency prices today?
+Tell me about lottery numbers
+How do I find celebrity gossip?
+What are the latest gaming tips?
+Can you help me with fitness routines?
+Where can I get dating advice?
+What's the best car maintenance?
+Give me information about home repair
+What is the legal advice today?
+Tell me about medical diagnosis
+How do I find financial planning?
+What are the latest tax preparation?
+Can you help me with insurance policies?
+Where can I get real estate prices?
+What's the best job search strategies?
+Give me information about college admissions
+What is the language translation today?
+Tell me about dream interpretation
+How do I find astrology signs?
+What are the latest numerology?
+Can you help me with tarot readings?
+Where can I get ghost stories?
+What's the best alien theories?
+Give me information about weather forecast
+What is the stock prices today?
+Tell me about recipe for cake
+How do I find sports scores?
+What are the latest movie reviews?
+Can you help me with travel destinations?
+Where can I get restaurant recommendations?
+What's the best political news?
+Give me information about cryptocurrency prices
+What is the lottery numbers today?
+Tell me about celebrity gossip
+How do I find gaming tips?
+What are the latest fitness routines?
+Can you help me with dating advice?
+Where can I get car maintenance?
+What's the best home repair?
+Give me information about legal advice
+What is the medical diagnosis today?
+Tell me about financial planning

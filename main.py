@@ -77,7 +77,7 @@ def stress_test(
     results = asyncio.run(load_tester.run_tests(endpoint, queries))
     
     typer.echo("\n📈 Evaluating results...")
-    scores = evaluator.evaluate(results, queries)
+    scores = evaluator.evaluate(results)
     
     typer.echo("\n📝 Generating reports...")
     report_paths = reporter.generate_reports(scores, results, queries)
@@ -131,7 +131,7 @@ def quick_test(endpoint: str = typer.Option("http://localhost:8000/query", "--en
     queries = query_generator.generate_sample()
     typer.echo(f"   Testing with {len(queries)} sample queries")
     results = asyncio.run(load_tester.run_tests(endpoint, queries))
-    scores = evaluator.evaluate(results, queries)
+    scores = evaluator.evaluate(results)
     health_score = scores.get('health_score', 0)
     typer.echo(f"\n🎯 Quick Test Health Score: {health_score:.1f}/100")
     typer.echo("   ✅ Endpoint appears functional" if health_score >= 60 else "   ⚠️  Endpoint may have issues")
