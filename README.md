@@ -2,6 +2,8 @@
 
 > Built autonomously by [NEO](https://heyneo.com) — your fully autonomous AI coding agent. &nbsp; [![NEO for VS Code](https://img.shields.io/badge/VS%20Code-NEO%20Extension-5C2D91?logo=visual-studio-code&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=NeoResearchInc.heyneo)
 
+![Architecture](./infographic.svg)
+
 A battle-testing toolkit for RAG (Retrieval-Augmented Generation) systems. Hammers any HTTP endpoint with 7 categories of adversarial queries under configurable concurrent load, then scores the results across hallucination rate, precision, latency, and consistency.
 
 ---
