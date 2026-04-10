@@ -18,7 +18,7 @@ class CorpusAnalyzer:
         self.config = config
         self.analyzer_config = config.get('corpus_analyzer', {})
         self.corpus_path = self.analyzer_config.get('corpus_path', './data/corpus')
-        self.min_word_freq = self.analyzer_config.get('min_word_freq', 5)
+        self.min_word_freq = self.analyzer_config.get('min_word_freq', 2)
         self.max_keywords = self.analyzer_config.get('max_keywords', 100)
         self.domain_keywords: Set[str] = set()
         self.domain_phrases: Set[str] = set()
@@ -42,12 +42,20 @@ class CorpusAnalyzer:
             for ext in ['*.txt', '*.md', '*.json']:
                 corpus_files.extend(Path(corpus_path).rglob(ext))
         
+        stopwords = {
+            "the", "and", "for", "are", "was", "were", "has", "have", "had",
+            "this", "that", "with", "from", "they", "will", "all", "its",
+            "not", "but", "can", "also", "use", "used", "which", "each",
+            "more", "such", "when", "than", "into", "some", "one", "two",
+            "may", "any", "you", "your", "our", "their", "been", "being",
+        }
+
         for file_path in corpus_files:
             try:
                 with open(file_path, 'r', encoding='utf-8') as f:
                     content = f.read()
                 total_docs += 1
-                words = re.findall(r'\b[a-zA-Z]{3,}\b', content.lower())
+                words = [w for w in re.findall(r'\b[a-zA-Z]{3,}\b', content.lower()) if w not in stopwords]
                 all_words.update(words)
                 total_words += len(words)
                 for i in range(len(words) - 2):

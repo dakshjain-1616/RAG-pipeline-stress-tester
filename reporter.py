@@ -78,18 +78,27 @@ class Reporter:
         table_rows_html = ''
         for tn in type_names:
             td = by_type.get(tn, {})
-            css = "success" if td.get("success_rate", 0) > 0.8 else "error"
+            success_css = "success" if td.get("success_rate", 0) > 0.8 else "error"
+            hall_rate = td.get("hallucination_rate", 0)
+            hall_css = "error" if hall_rate > 0.5 else ("warning" if hall_rate > 0.2 else "success")
+            ref_rate = td.get("refusal_rate", 0)
+            ref_css = "success" if (tn == "out_of_scope" and ref_rate > 0.5) else ("error" if ref_rate > 0.5 and tn != "out_of_scope" else "")
             table_rows_html += (
                 f'<tr><td>{tn}</td>'
                 f'<td>{td.get("count", 0)}</td>'
-                f'<td class="{css}">{td.get("success_rate", 0) * 100:.1f}%</td>'
+                f'<td class="{success_css}">{td.get("success_rate", 0) * 100:.1f}%</td>'
                 f'<td>{td.get("avg_latency", 0):.1f}ms</td>'
                 f'<td>{td.get("error_rate", 0) * 100:.1f}%</td>'
-                f'<td>{td.get("hallucination_rate", 0) * 100:.1f}%</td></tr>'
+                f'<td class="{hall_css}">{hall_rate * 100:.1f}%</td>'
+                f'<td class="{ref_css}">{ref_rate * 100:.1f}%</td></tr>'
             )
 
+        type_hallucination_rates = [by_type.get(t, {}).get('hallucination_rate', 0) * 100 for t in type_names]
+        type_refusal_rates = [by_type.get(t, {}).get('refusal_rate', 0) * 100 for t in type_names]
         type_labels_json = json.dumps(type_names)
         type_data_json = json.dumps(type_success_rates)
+        type_hallucination_json = json.dumps(type_hallucination_rates)
+        type_refusal_json = json.dumps(type_refusal_rates)
         latencies_json = json.dumps(latencies if latencies else [0])
 
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -127,6 +136,7 @@ class Reporter:
         tr:hover { background: #f5f5f5; }
         .success { color: #28a745; }
         .error { color: #dc3545; }
+        .warning { color: #e67e00; }
         """
 
         html_content = f"""<!DOCTYPE html>
@@ -157,11 +167,12 @@ class Reporter:
             <div class="metric-card"><h3>Consistency</h3><div class="metric-value">{consistency_val:.1f}%</div><div class="metric-label">uniform quality</div></div>
         </div>
         <div class="chart-container"><h3>Success Rate by Query Type</h3><canvas id="typeChart"></canvas></div>
+        <div class="chart-container"><h3>Hallucination &amp; Refusal Rate by Query Type</h3><canvas id="hallucChart"></canvas></div>
         <div class="chart-container"><h3>Latency Distribution</h3><canvas id="latencyChart"></canvas></div>
         <div class="recommendations"><h3>Recommendations</h3><ul>{recommendations_html}</ul></div>
         <div class="table-container"><h3>Query Type Breakdown</h3>
             <table>
-                <thead><tr><th>Query Type</th><th>Count</th><th>Success Rate</th><th>Avg Latency</th><th>Error Rate</th><th>Hallucination Rate</th></tr></thead>
+                <thead><tr><th>Query Type</th><th>Count</th><th>Success Rate</th><th>Avg Latency</th><th>Error Rate</th><th>Hallucination Rate</th><th>Refusal Rate</th></tr></thead>
                 <tbody>{table_rows_html}</tbody>
             </table>
         </div>
@@ -185,6 +196,34 @@ class Reporter:
                 scales: {{
                     y: {{ beginAtZero: true, max: 100 }}
                 }}
+            }}
+        }});
+
+        const hallucCtx = document.getElementById('hallucChart').getContext('2d');
+        new Chart(hallucCtx, {{
+            type: 'bar',
+            data: {{
+                labels: {type_labels_json},
+                datasets: [
+                    {{
+                        label: 'Hallucination Rate (%)',
+                        data: {type_hallucination_json},
+                        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }},
+                    {{
+                        label: 'Refusal Rate (%)',
+                        data: {type_refusal_json},
+                        backgroundColor: 'rgba(255, 205, 86, 0.6)',
+                        borderColor: 'rgba(255, 205, 86, 1)',
+                        borderWidth: 1
+                    }}
+                ]
+            }},
+            options: {{
+                responsive: true,
+                scales: {{ y: {{ beginAtZero: true, max: 100 }} }}
             }}
         }});
 

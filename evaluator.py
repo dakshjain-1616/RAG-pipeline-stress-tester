@@ -28,7 +28,12 @@ class Evaluator:
         for keyword in self.refusal_keywords:
             if keyword.lower() in text:
                 return True
-        refusal_patterns = ["i'm sorry", "i apologize", "cannot help", "not able to", "outside my scope", "not in my knowledge"]
+        refusal_patterns = [
+            "i'm sorry", "i apologize", "cannot help", "not able to",
+            "outside my scope", "outside the scope", "outside my area",
+            "not in my knowledge", "don't have information about",
+            "area of expertise", "cannot find relevant", "not enough context",
+        ]
         return any(pattern in text for pattern in refusal_patterns)
     
     def calculate_keyword_overlap(self, query: str, response: Any, corpus_keywords: Optional[Set[str]] = None) -> float:
@@ -45,7 +50,13 @@ class Evaluator:
         return overlap
     
     def detect_hallucination(self, query: str, response: Any, corpus_keywords: Optional[Set[str]] = None, threshold: Optional[float] = None) -> bool:
-        """Detect potential hallucination in response."""
+        """Detect potential hallucination in response.
+
+        Refusals are never hallucinations — a system that says 'I don't know'
+        for an out-of-scope query is behaving correctly.
+        """
+        if self.detect_refusal(response):
+            return False
         effective_threshold = threshold if threshold is not None else self.hallucination_threshold
         overlap = self.calculate_keyword_overlap(query, response, corpus_keywords)
         return overlap < effective_threshold
@@ -189,9 +200,10 @@ class Evaluator:
             refusal_rate = self.calculate_refusal_rate(responses)
             precision_score = self.calculate_precision_score(queries, responses)
             consistency_score = self.calculate_consistency_score(responses)
+            # Weights already sum to 100 — no further multiplication needed.
             health_score = (precision_score * 30 + (1 - error_rate) * 25 + (1 - hallucination_rate) * 20 +
                             consistency_score * 15 + (1 - refusal_rate) * 10)
-            health_score = min(100, max(0, health_score * 100))
+            health_score = min(100, max(0, health_score))
             return {
                 'hallucination_rate': hallucination_rate,
                 'refusal_rate': refusal_rate,
@@ -211,9 +223,22 @@ class Evaluator:
         precision_score = self.calculate_precision_score(results)
         hallucination_rate = self.calculate_hallucination_rate(results)
         refusal_rate = self.calculate_refusal_rate(results)
+        by_type = self._evaluate_by_type(results, corpus_keywords)
+        # Refusal score: reward correct refusals on out-of-scope, penalise on others.
+        oos_stats = by_type.get('out_of_scope', {})
+        oos_refusal_rate = oos_stats.get('refusal_rate', refusal_rate)
+        oos_count = oos_stats.get('count', 0)
+        total = len(results) or 1
+        if oos_count > 0 and oos_count < total:
+            other_refusal_rate = (refusal_rate * total - oos_refusal_rate * oos_count) / (total - oos_count)
+            refusal_component = (oos_refusal_rate + (1 - other_refusal_rate)) / 2
+        else:
+            # No type info — be neutral about refusals
+            refusal_component = 0.5
+        # Weights already sum to 100 — no further multiplication needed.
         health_score = (precision_score * 30 + (1 - error_rate) * 25 + (1 - hallucination_rate) * 20 +
-                        consistency_score * 15 + (1 - refusal_rate) * 10)
-        health_score = min(100, max(0, health_score * 100))
+                        consistency_score * 15 + refusal_component * 10)
+        health_score = min(100, max(0, health_score))
         by_type = self._evaluate_by_type(results, corpus_keywords)
         evaluation = {
             'health_score': health_score, 'latency': latency_metrics, 'latency_metrics': latency_metrics,

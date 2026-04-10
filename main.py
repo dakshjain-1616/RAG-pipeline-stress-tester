@@ -70,11 +70,13 @@ def stress_test(
     os.makedirs(output_dir, exist_ok=True)
     
     typer.echo("\n📊 Generating test queries...")
-    queries = query_generator.generate_all(query_types.split(',') if query_types else None)
+    typed_queries = query_generator.generate_all_with_types(query_types.split(',') if query_types else None)
+    queries = [q for q, _ in typed_queries]
+    qtypes = [t for _, t in typed_queries]
     typer.echo(f"   Generated {len(queries)} test queries")
-    
+
     typer.echo("\n⚡ Running load tests...")
-    results = asyncio.run(load_tester.run_tests(endpoint, queries))
+    results = asyncio.run(load_tester.run_tests(endpoint, queries, qtypes))
     
     typer.echo("\n📈 Evaluating results...")
     scores = evaluator.evaluate(results)
@@ -83,28 +85,59 @@ def stress_test(
     report_paths = reporter.generate_reports(scores, results, queries)
     
     typer.echo(f"\n✅ Stress test complete!\n   JSON Report: {report_paths['json']}\n   HTML Report: {report_paths['html']}")
-    
+
     health_score = scores.get('health_score', 0)
-    typer.echo(f"\n🎯 Overall Health Score: {health_score:.1f}/100")
+    typer.echo(f"\n{'='*55}")
+    typer.echo(f"  Overall Health Score : {health_score:.1f}/100")
     if health_score >= 80:
-        typer.echo("   Status: ✅ EXCELLENT - System is robust")
+        typer.echo("  Status               : EXCELLENT - System is robust")
     elif health_score >= 60:
-        typer.echo("   Status: ⚠️  GOOD - Some improvements needed")
+        typer.echo("  Status               : GOOD - Some improvements needed")
     elif health_score >= 40:
-        typer.echo("   Status: ❌ FAIR - Significant issues detected")
+        typer.echo("  Status               : FAIR - Significant issues detected")
     else:
-        typer.echo("   Status: 🚨 POOR - Critical vulnerabilities found")
+        typer.echo("  Status               : POOR - Critical vulnerabilities found")
+
+    typer.echo(f"  Total requests       : {scores.get('total_requests', 0)}")
+    typer.echo(f"  Error rate           : {scores.get('error_rate', 0)*100:.1f}%")
+    typer.echo(f"  Precision score      : {scores.get('precision_score', 0)*100:.1f}%")
+    typer.echo(f"  Hallucination rate   : {scores.get('hallucination_rate', 0)*100:.1f}%")
+    typer.echo(f"  Refusal rate         : {scores.get('refusal_rate', 0)*100:.1f}%")
+    typer.echo(f"  Consistency score    : {scores.get('consistency_score', 0)*100:.1f}%")
+    lat = scores.get('latency_metrics', scores.get('latency', {}))
+    typer.echo(f"  Latency p50/p95/p99  : {lat.get('p50',0):.1f} / {lat.get('p95',0):.1f} / {lat.get('p99',0):.1f} ms")
+
+    by_type = scores.get('by_query_type', {})
+    if by_type and list(by_type.keys()) != ['unknown']:
+        typer.echo(f"\n  {'Query Type':<18} {'Count':>6}  {'Halluc%':>8}  {'Refusal%':>9}  {'AvgLat':>8}")
+        typer.echo(f"  {'-'*18} {'-'*6}  {'-'*8}  {'-'*9}  {'-'*8}")
+        for qtype, stats in sorted(by_type.items()):
+            typer.echo(
+                f"  {qtype:<18} {stats.get('count',0):>6}  "
+                f"{stats.get('hallucination_rate',0)*100:>7.1f}%  "
+                f"{stats.get('refusal_rate',0)*100:>8.1f}%  "
+                f"{stats.get('avg_latency',0):>7.1f}ms"
+            )
+
+    recs = scores.get('recommendations', [])
+    if recs:
+        typer.echo(f"\n  Recommendations:")
+        for rec in recs:
+            typer.echo(f"    - {rec}")
+    typer.echo(f"{'='*55}")
 
 
 @app.command()
 def analyze_corpus(
     corpus_path: str = typer.Option(..., "--corpus", "-p", help="Path to corpus directory or file"),
     output_dir: str = typer.Option("./query_bank", "--output", "-o", help="Output directory for generated queries"),
-    num_queries: int = typer.Option(50, "--num-queries", "-n", help="Number of queries to generate per type", min=10, max=200),
+    num_queries: int = typer.Option(50, "--num-queries", "-n", help="Number of queries to generate per type", min=1, max=200),
+    min_word_freq: int = typer.Option(2, "--min-word-freq", help="Minimum word frequency to count as a domain keyword", min=1),
 ):
     """Analyze a corpus to generate in-scope and out-of-scope queries."""
     typer.echo(f"📚 Analyzing corpus: {corpus_path}")
     config = load_config()
+    config.setdefault('corpus_analyzer', {})['min_word_freq'] = min_word_freq
     analyzer = CorpusAnalyzer(config)
     results = analyzer.analyze(corpus_path, num_queries)
     os.makedirs(output_dir, exist_ok=True)

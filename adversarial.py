@@ -451,6 +451,15 @@ class QueryGenerator:
             selected = all_types
         return [q for queries in selected.values() for q in queries]
 
+    def generate_all_with_types(self, query_types: Optional[List[str]] = None, num_per_type: int = 50) -> List[tuple]:
+        """Generate a list of (query, query_type) tuples preserving category labels."""
+        all_types = self.generate_all_types(num_per_type)
+        if query_types:
+            selected = {t: all_types[t] for t in query_types if t in all_types}
+        else:
+            selected = all_types
+        return [(q, qtype) for qtype, queries in selected.items() for q in queries]
+
     def generate_sample(self, num_per_type: int = 5) -> List[str]:
         """Generate a small sample of queries across all types."""
         return self.generate_all(num_per_type=num_per_type)
